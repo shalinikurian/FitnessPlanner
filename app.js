@@ -4,6 +4,7 @@
  */
 
 var express = require('express');
+var fs = require('fs');
 
 var app = module.exports = express.createServer();
 
@@ -26,13 +27,24 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-// Routes
+//Controllers
 
+
+//Controller for a User
+var UserController = require('./controllers/user');
+
+
+//Routes
+
+
+//on root send index.html
 app.get('/', function(req, res){
-  res.render('index', {
-    title: 'Express'
-  });
+  res.sendfile('/public/index.html');
 });
+
+
+//on /signup route to newUser in UserController
+app.post('/signup', UserController.newUser);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
