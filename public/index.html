@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>index</title>
+	<meta name="generator" content="Studio 3 http://aptana.com/">
+	<meta name="author" content="Shalini Kurian">
+    <script src ="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+	<script src ="/js/FitnessPlannerMain.js"></script>
+	<!-- index.html is a test file written for testing the backend. Future implementation : skeleton html for a single page application-->
+</head>
+<body>
+	<div class="form">
+		<form name ="new_user_form" id ="new_user_form" action="/signup" method="POST"> 
+			First name: <input type="text" name="user[firstaName]" /><br />
+			Last name: <input type="text" name="user[lastName]" /><br/>
+			Nickame: <input type="text" name="user[nickName]" /><br />
+			Email Address: <input type="text" name="user[emailAddress]" /><br/>
+			Gender: <select class= "select-box">
+				    	<option value = "male">Male</option>
+				    	<option value = "female">Female</option>
+			        </select></br>
+			Height(in cms): <input type = "text" name="user[height]" /><br/>
+		    Weight(pounds): <input type = "text" name="user[weight]" /><br />
+		    Password: <input type = "password" name ="password"/></br>
+			Goal: <input type="text" name="user[goal]" /><br/>
+			<input type = "hidden" name = "user[gender]" id ="gender-hidden"/>
+			<button type="submit" id="new_user">Submit</button>
+    	</form>	
+	</div>
+    
+</body>
+</html>
