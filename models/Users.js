@@ -4,17 +4,20 @@
 
 /*
  * require node modules
- * 
- * mongoose: is an ORM to mongodb 
- * crypto:   is the cryptography module for node
- */ 
+ * mongoose: ORM to mongodb
+ * crypto: provides functions related to cryptography
+ */
 var Mongoose = require('mongoose');
 var crypto = require('crypto');
 
-//create a new Hash Object based on the sha1 algorithm
+/*
+ * sha1 is an instance of a Hash Object using the sha1 encryption algorithm
+ */
 var sha1 = crypto.createHash('sha1');
 
-//create a new Schema
+/*
+ * define a Mongoose Schema
+ */
 var Schema = Mongoose.Schema;
 var ObjectID = Schema.ObjectId;
 
@@ -43,60 +46,59 @@ var User = new Schema({
 	}
 });
 
+//Connect to the mongoose database fitnessPlanner
+var db = Mongoose.connect('mongodb://localhost/fitnessPlanner');
+
 /*
  * Define the User Model and Access it
  */
 var NewUser = Mongoose.model('User',User);
 
+
 /*
- * getters and setters for Schema attributes
+ * setters and getters for attributes of model User
  */
 
 /*
- * generateHashedPassword creates a hashedPassword from the password 
+ * generateHashedPassword is a setter for attribute password which generates a hash for the password
  */
 function generateHashedPassword(password) {
-	//TODO: add a salt (append a random string to the password before hashing)
 	
-	//give sha1 data for hashing
+	// store the password to be hashed
 	sha1.update(password);
 	
 	//create a hash for the password
 	var hashedPassword = sha1.digest('hex');	
-	
+	console.log("hasehed Password");
+	console.log(hashedPassword);
 	return hashedPassword;
 }
 
 /*
- * functions to be used by other files
+ * functions to be exported for use in other files
  */
-
 /*
  * addNewUser adds a new User to the database
  */
 module.exports.addNewUser = function (new_user) {
 
-    // user is an instance of New_User
-	var user = new NewUser();                 
+	var user = new NewUser();                 //instance of New_User
 	user.firstName = new_user.firstName || "";
 	user.lastName = new_user.lastName || "";
 	user.nickName = new_user.nickName || "";
-	//setter for model attribute hashedPassword is called to create the hashedPassword
-	user.hashedPassword = new_user.password || "";
+	user.hashedPassword = new_user.password || ""; //setter called here
 	user.emailAddress = new_user.emailAddress || "";
 	user.gender = new_user.gender || "";
 	user.height = new_user.height || 0;
 	user.weight = new_user.weight || 0;
-	user.goal = new_user.goal || "";
-	
-	//save the user in the database
+	user.goal = new_user.goal || ""; 			
 	user.save(function(err){
-		if (err){
-			throw err; // TODO: return it to controller and handle error 
+		if (err) {
+			console.log("error in saving user in database fitnessPlanner");
+			throw err;
 		}
+		console.log("saved user information in collection users in database fitnessPlanner");
 	});
 	
 }
-
-
 
