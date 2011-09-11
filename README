@@ -1,4 +1,13 @@
 Fitness planner app
+
+Dependencies:
+Nodejs (https://github.com/joyent/node)
+Expressjs (https://github.com/visionmedia/express)
+Mongoosejs (https://github.com/LearnBoost/mongoose)
+Underscorejs (https://github.com/documentcloud/underscore)
+Backbonejs (https://github.com/documentcloud/backbone)
+
+
 Specs:
 REST API implemented in Express
 Web app written in backbone.js with views for mobile and desktop web.
