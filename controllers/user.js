@@ -15,7 +15,13 @@ var UserModel = mongoose.model('User');
 
 module.exports.newUser = function(req, res) {
 	var userObject = req.body.user;
-	users.addNewUser(userObject, function(user){
+	users.addNewUser(userObject, function(err, user){
+		if (err){
+			
+			res.send("email in use");
+			//TODO handle error
+			return;
+		}
 		req.session.user = user;
 		console.log("in session");
 		res.send("signed up and logged in "+req.session.user.firstName);
@@ -30,7 +36,11 @@ module.exports.newUser = function(req, res) {
 module.exports.loginUser = function(req, res){
 	var email = req.body.email;
 	var password = req.body.password;
-	UserModel.authenticate(email, password, function(user){
+	UserModel.authenticate(email, password, function(err, user){
+		if(err){
+			//TODO handle err
+			return;
+		}
 		if (user){
 			req.session.user = user;
 			console.log("in session");

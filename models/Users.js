@@ -49,7 +49,7 @@ var db = Mongoose.connect('mongodb://localhost/fitnessPlanner');
 /*
  * getUser returns a user for the given email and password and returns null if no user is found
  */
-User.statics.authenticate= function authenticate(email, password,cb){
+User.statics.authenticate = function authenticate(email, password,cb){
 	//TODO two queries after adding salt
 	var hashedPassword = generateHashedPassword(password);
 
@@ -57,9 +57,27 @@ User.statics.authenticate= function authenticate(email, password,cb){
     	console.log("after find one");
     	if (err){
     		throw err;
-    		return null;
+    		cb(err);
     	}
-		cb(user);
+		cb(err, user);
+	});
+}
+
+User.statics.checkEmailInUse = function checkEmailInUse(email, cb){
+	this.findOne({emailAddress:email}, function(err,user){
+    	if (err){
+    		throw err;
+    		//cb(err);
+    	}
+    	console.log("user");
+    	console.log(user);
+    	if (user){
+    		console.log("email in use");
+    		cb("email in use");
+    	}else {
+    		cb(null);
+    	}
+    	
 	});
 }
 /*
@@ -97,25 +115,36 @@ function generateHashedPassword(password) {
  * addNewUser adds a new User to the database
  */
 module.exports.addNewUser = function (new_user, cb) {
-    //TODO check if email in use
-	var user = new NewUser();                 //instance of New_User
-	user.firstName = new_user.firstName || "";
-	user.lastName = new_user.lastName || "";
-	user.nickName = new_user.nickName || "";
-	user.hashedPassword = new_user.password || ""; //setter called here
-	user.emailAddress = new_user.emailAddress || "";
-	user.gender = new_user.gender || "";
-	user.height = new_user.height || 0;
-	user.weight = new_user.weight || 0;
-	user.goal = new_user.goal || ""; 			
-	user.save(function(err){
-		if (err) {
-			console.log("error in saving user in database fitnessPlanner");
-			throw err;
-		}
-		console.log("saved user information in collection users in database fitnessPlanner");
-		cb(user);
-	});
+    //check if the given email exists in the database
+    NewUser.checkEmailInUse(new_user.emailAddress,function(err) {
+    	if (err){ //send error back to controller
+    		cb(err);
+    	}else { //make new user
+    		var user = new NewUser();                 //instance of New_User
+			user.firstName = new_user.firstName || "";
+			user.lastName = new_user.lastName || "";
+			user.nickName = new_user.nickName || "";
+			user.hashedPassword = new_user.password || ""; //setter called here
+			user.emailAddress = new_user.emailAddress || "";
+			user.gender = new_user.gender || "";
+			user.height = new_user.height || 0;
+			user.weight = new_user.weight || 0;
+			user.goal = new_user.goal || ""; 	
+			
+			user.save(function(err){
+				if (err) {
+					console.log("error in saving user in database fitnessPlanner");
+					throw err;
+					cb(err);
+				}
+				console.log("saved user information in collection users in database fitnessPlanner");
+				cb(err, user);
+			});
+    	}
+    	
+    });
+	
+    
 	
 }
 
