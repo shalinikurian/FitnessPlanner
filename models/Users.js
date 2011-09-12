@@ -119,9 +119,19 @@ module.exports.addNewUser = function (new_user, cb) {
     NewUser.checkEmailInUse(new_user.emailAddress,function(err) {
     	if (err){ //send error back to controller
     		cb(err);
-    	}else { //make new user
-    		var user = new NewUser();                 //instance of New_User
-			user.firstName = new_user.firstName || "";
+    	}else { 
+    		createNewUser(new_user, cb);
+    	}
+    });
+	
+}
+
+/*
+ * createNewUser creates a new User
+ */
+function createNewUser(new_user, cb) {
+	var user = new NewUser();                 //instance of New_User
+	user.firstName = new_user.firstName || "";
 			user.lastName = new_user.lastName || "";
 			user.nickName = new_user.nickName || "";
 			user.hashedPassword = new_user.password || ""; //setter called here
@@ -140,12 +150,6 @@ module.exports.addNewUser = function (new_user, cb) {
 				console.log("saved user information in collection users in database fitnessPlanner");
 				cb(err, user);
 			});
-    	}
-    	
-    });
-	
-    
-	
 }
 
 
