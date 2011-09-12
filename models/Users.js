@@ -11,11 +11,6 @@ var Mongoose = require('mongoose');
 var crypto = require('crypto');
 
 /*
- * sha1 is an instance of a Hash Object using the sha1 encryption algorithm
- */
-var sha1 = crypto.createHash('sha1');
-
-/*
  * define a Mongoose Schema
  */
 var Schema = Mongoose.Schema;
@@ -48,7 +43,25 @@ var User = new Schema({
 
 //Connect to the mongoose database fitnessPlanner
 var db = Mongoose.connect('mongodb://localhost/fitnessPlanner');
+/*
+ * statics and methods
+ */
+/*
+ * getUser returns a user for the given email and password and returns null if no user is found
+ */
+User.statics.authenticate= function authenticate(email, password,cb){
+	//TODO two queries after adding salt
+	var hashedPassword = generateHashedPassword(password);
 
+    this.findOne({emailAddress:email, hashedPassword:hashedPassword}, function(err,user){
+    	console.log("after find one");
+    	if (err){
+    		throw err;
+    		return null;
+    	}
+		cb(user);
+	});
+}
 /*
  * Define the User Model and Access it
  */
@@ -64,13 +77,16 @@ var NewUser = Mongoose.model('User',User);
  */
 function generateHashedPassword(password) {
 	
+	/*
+ 	* sha1 is an instance of a Hash Object using the sha1 encryption algorithm
+ 	*/
+	var sha1 = crypto.createHash('sha1');
 	// store the password to be hashed
 	sha1.update(password);
 	
 	//create a hash for the password
 	var hashedPassword = sha1.digest('hex');	
-	console.log("hasehed Password");
-	console.log(hashedPassword);
+	console.log("hahsed password for ");
 	return hashedPassword;
 }
 
@@ -80,8 +96,8 @@ function generateHashedPassword(password) {
 /*
  * addNewUser adds a new User to the database
  */
-module.exports.addNewUser = function (new_user) {
-
+module.exports.addNewUser = function (new_user, cb) {
+    //TODO check if email in use
 	var user = new NewUser();                 //instance of New_User
 	user.firstName = new_user.firstName || "";
 	user.lastName = new_user.lastName || "";
@@ -98,7 +114,9 @@ module.exports.addNewUser = function (new_user) {
 			throw err;
 		}
 		console.log("saved user information in collection users in database fitnessPlanner");
+		cb(user);
 	});
 	
 }
+
 

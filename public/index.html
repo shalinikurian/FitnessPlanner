@@ -12,7 +12,9 @@
 	<!-- index.html is a test file written for testing the backend. Future implementation : skeleton html for a single page application-->
 </head>
 <body>
+	<!-- sign up form-->
 	<div class="form">
+		<div>Sign up form</div>
 		<form name ="new_user_form" id ="new_user_form" action="/signup" method="POST"> 
 			First name: <input type="text" name="user[firstName]" /><br />
 			Last name: <input type="text" name="user[lastName]" /><br/>
@@ -24,11 +26,20 @@
 			        </select></br>
 			Height(in cms): <input type = "text" name="user[height]" /><br/>
 		    Weight(pounds): <input type = "text" name="user[weight]" /><br />
-		    Password: <input type = "password" name ="password"/></br>
+		    Password: <input type = "password" name ="user[password]"/></br>
 			Goal: <input type="text" name="user[goal]" /><br/>
 			<input type = "hidden" name = "user[gender]" id ="gender-hidden"/>
 			<button type="submit" id="new_user">Submit</button>
     	</form>	
+	</div>
+	<!-- login form-->
+	<div class="form">
+		<div>login form</div>
+		<form name ="login_form" id="login_form" action="/login" method="POST">
+			Email Address:<input type="text" name ="email"/></br>
+			Password:<input type="password" name="password"/></br>
+			<input type="submit"/>
+		</form>
 	</div>
     
 </body>

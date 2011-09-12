@@ -5,8 +5,9 @@
 
 //user is an instance of User model
 
-var user = require('../models/Users');
-
+var users = require('../models/Users');
+var mongoose = require('mongoose');
+var UserModel = mongoose.model('User');
 
 /*
  * newUser extracts a new user information from the request body and asks the user model to add a new user
@@ -14,5 +15,30 @@ var user = require('../models/Users');
 
 module.exports.newUser = function(req, res) {
 	var userObject = req.body.user;
-	user.addNewUser(userObject);
+	users.addNewUser(userObject, function(user){
+		req.session.user = user;
+		console.log("in session");
+		res.send("signed up and logged in "+req.session.user.firstName);
+	});
+	//to do : do this as a callback and not sequentially
+	
 }
+
+/*
+ * loginUser checks if the given user exists
+ */
+module.exports.loginUser = function(req, res){
+	var email = req.body.email;
+	var password = req.body.password;
+	UserModel.authenticate(email, password, function(user){
+		if (user){
+			req.session.user = user;
+			console.log("in session");
+			res.send("signed up and logged in "+req.session.user.firstName);
+		}else {
+			res.send("wrong user/password");
+		}	
+	});
+	
+}
+
