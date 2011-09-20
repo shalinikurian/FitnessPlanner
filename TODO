@@ -1,0 +1,19 @@
+TODO for Rajiv:
+1. Work on Calendar model and controller
+2. Work on Workout model and controller
+
+TODO for Shalini: 
+1. Anonymous user: Give the client a user with a session object. The client can store the session as it pleases (in memory/ localstorage/ cookie) and can use it to make authenticated calls
+	Other features: Users can add password, email address etc to account so that they can access their data on a mobile device or another desktop client
+	Needed for: Full functionality for users who have not signed up.
+
+
+
+TODO pool
+1. Following a workout.
+2. Following a user? Do we do this?
+3. Store who is following what workout so both people know. 
+
+
+
+
