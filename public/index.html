@@ -8,6 +8,9 @@
 	<meta name="generator" content="Studio 3 http://aptana.com/">
 	<meta name="author" content="Shalini Kurian">
     <script src ="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 	<script src ="/js/FitnessPlannerMain.js"></script>
 	<!-- index.html is a test file written for testing the backend. Future implementation : skeleton html for a single page application-->
 </head>
@@ -33,14 +36,12 @@
     	</form>	
 	</div>
 	<!-- login form-->
-	<div class="form">
+	<div id="login-form">
 		<div>login form</div>
-		<form name ="login_form" id="login_form" action="/login" method="POST">
-			Email Address:<input type="text" name ="email"/></br>
-			Password:<input type="password" name="password"/></br>
-			<input type="submit"/>
-		</form>
+		    Email Address:<input type="text" name ="email" id ="email"/></br>
+			Password:<input type="password" name="password" id = "password"/></br>
+			<button id="login-button">Submit</button>	
 	</div>
-    
+   
 </body>
 </html>

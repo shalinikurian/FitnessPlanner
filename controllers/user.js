@@ -36,16 +36,21 @@ module.exports.newUser = function(req, res) {
 module.exports.loginUser = function(req, res){
 	var email = req.body.email;
 	var password = req.body.password;
+	
 	UserModel.authenticate(email, password, function(err, user){
 		if(err){
 			//TODO handle err
 			return;
+		}else{
+			
 		}
 		if (user){
 			req.session.user = user;
 			console.log("in session");
-			res.send("signed up and logged in "+req.session.user.firstName);
+			//res.send("signed up and logged in "+req.session.user.firstName);
+			res.send({"model":user});
 		}else {
+			console.log("wrong user or password");
 			res.send("wrong user/password");
 		}	
 	});

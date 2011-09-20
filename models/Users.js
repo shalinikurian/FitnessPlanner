@@ -104,7 +104,7 @@ function generateHashedPassword(password) {
 	
 	//create a hash for the password
 	var hashedPassword = sha1.digest('hex');	
-	console.log("hahsed password for ");
+
 	return hashedPassword;
 }
 

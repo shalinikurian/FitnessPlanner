@@ -55,5 +55,9 @@ app.post('/signup', UserController.newUser);
 //on /login route to logingUser in UserController
 app.post('/login', UserController.loginUser);
 
+app.get('/login', function(req, res){
+
+	res.send({"key":"value"});
+});
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
