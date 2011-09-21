@@ -6,14 +6,19 @@
  * override sync funtion 
  * READ - POST request
  */
-Backbone.sync = function (method, model, success, error){
+/*Backbone.sync = function (method, model, success, error){
 	var params = _.extend({
       type:         'POST',
       dataType:     'json',
       data:         model.getCredentials(), 
-      success: function(resp) {
-      	alert("success functon");
-      	success(resp.model);
+      success: function(res) {
+      	if (res.model){ //found muser
+      		alert("success functon");
+      		success(res.model);
+      	} else if (res.error) {
+      		alert("error");
+      		error(res.error);
+      	}
       },
       error: function (jqSHR, textStatus, errorThrown) {
       	alert("error");
@@ -29,7 +34,7 @@ Backbone.sync = function (method, model, success, error){
     }
     alert(JSON.stringify(params));
     $.ajax(params);
-}
+}*/
 
 /*
  * define a user model
@@ -40,6 +45,36 @@ var userModel = Backbone.Model.extend({
 	// returns data for post request
 	getCredentials: function() {
 		return "email="+this.get("emailAddress")+ "&password="+this.get("password");	
+	},
+	
+	sync: function (method, model, success, error){
+		var params = _.extend({
+	    	type:         'POST',
+	        dataType:     'json',
+	        data:         model.getCredentials(), 
+	        success: function(res) {
+		      	if (res.model){ //found muser
+		      		alert("success functon");
+		      		success(res.model);
+		      	} else if (res.error) {
+		      		alert("error");
+		      		error(res.error);
+		      	}
+	       },
+	       error: function (jqSHR, textStatus, errorThrown) {
+	      		alert("error");
+	      		alert(textStatus);
+	      		//handle error
+	      	}
+	    });
+	  
+	    if (method == 'create') {
+	    	params.url = '/signup';
+	    } else if (method == 'read') {
+	    	params.url = model.url;
+	    }
+	    alert(JSON.stringify(params));
+	    $.ajax(params);
 	}
 });
 
@@ -68,7 +103,8 @@ $('document').ready(function() {
 				alert(JSON.stringify(user));	
 			},
 			
-			error: function() {
+			error: function(error) {
+				alert("wrong username or password");
 				//handle error
 			}
 		});
