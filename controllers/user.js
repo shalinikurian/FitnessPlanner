@@ -51,7 +51,8 @@ module.exports.loginUser = function(req, res){
 			res.send({"model":user});
 		}else {
 			console.log("wrong user or password");
-			res.send("wrong user/password");
+			res.send({"error": "wrong email or password"});
+			//res.send("wrong user/password");
 		}	
 	});
 	
