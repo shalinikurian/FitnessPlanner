@@ -15,6 +15,7 @@ var UserModel = mongoose.model('User');
 
 module.exports.newUser = function(req, res) {
 	var userObject = req.body.user;
+	console.log("in new user");
 	users.addNewUser(userObject, function(err, user){
 		if (err){
 			
@@ -24,7 +25,7 @@ module.exports.newUser = function(req, res) {
 		}
 		req.session.user = user;
 		console.log("in session");
-		res.send("signed up and logged in "+req.session.user.firstName);
+		res.send({"token": user.token, "userID": user._id.toString()});
 	});
 	//to do : do this as a callback and not sequentially
 	
